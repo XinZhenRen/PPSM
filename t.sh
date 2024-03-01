@@ -1,0 +1,2 @@
+python train_others.py --model=FCBFormer --dataset=polyGen --data-root=./polypGen2021_MultiCenterData_v3/ --resume-training=./Trained_models/FCBFormer_polyGen_epoch8_mean0.7508144212738539_devicecuda.pt --fromEpoch=9
+python train_others.py --model=EUNet --dataset=SUN --data-root=./SUN/ --resume-training=./Trained_models/EUNet_SUN_epoch10_mean0.8719086951940058_devicecuda.pt --fromEpoch=11

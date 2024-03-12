@@ -4,20 +4,20 @@ import progressbar
 import datetime
 
 fillName=[
-    # "kvasir-sessile20231126_160357.txt",
-    #       "SUN20231126_154955.txt",
-    #       "Kvasir-SEG20231126_172709.txt",
-    #       "CVC-ClinicDB20231126_161519.txt",
-    #       "IVPS-TrainSet20231126_133434.txt",
-    #       "hyper-kvasir20231126_115149.txt",
+    "kvasir-sessile20231126_160357.txt",
+          "SUN20231126_154955.txt",
+          "Kvasir-SEG20231126_172709.txt",
+          "CVC-ClinicDB20231126_161519.txt",
+          "IVPS-TrainSet20231126_133434.txt",
+          "hyper-kvasir20231126_115149.txt",
           "polypGen20240311_204043.txt"]
 dName=[
-#     "kvasir-sessile",
-# "SUN",
-# "Kvasir-SEG",
-# "CVC-ClinicDB",
-# "MICCVI",
-# "Hyper-Kvasir",
+    "kvasir-sessile",
+"SUN",
+"Kvasir-SEG",
+"CVC-ClinicDB",
+"MICCVI",
+"Hyper-Kvasir",
        "polypGen"]
 for data_array,dataName in zip(fillName,dName):
     bar = progressbar.ProgressBar(widgets=[progressbar.Timer(),
@@ -43,7 +43,8 @@ for data_array,dataName in zip(fillName,dName):
     # dataName="Hyper-Kvasir"
     # 设置采样 5代表没各个像素采样一次
     fs = 40
-    zoom = 40
+    zoom = 40.0
+    allFlage=True
     # data_array=np.random.rand(400, 400)
     print(data_array)
     min_values = data_array.min(axis=0)
@@ -52,6 +53,9 @@ for data_array,dataName in zip(fillName,dName):
     # 避免分母为零，将最小值和最大值相等的情况处理为1
     max_values[max_values == min_values] = 1
     normalized_data = (data_array - min_values) / (max_values - min_values)
+    mean_val=normalized_data.mean()
+    std_val = normalized_data.std()
+    normalized_data=(normalized_data-mean_val)/std_val
 
     print(normalized_data)
 
@@ -61,7 +65,7 @@ for data_array,dataName in zip(fillName,dName):
     print("cols:", cols)
 
     # 设置图像大小
-    plt.figure(figsize=(cols / 100, rows / 100), dpi=1000)
+    plt.figure(figsize=(cols/100, rows/100), dpi=1000)
     plt.axes().set_facecolor("black")
     size_inches = plt.gcf().get_size_inches()
     print("图形大小（英寸）：", size_inches)
@@ -72,16 +76,25 @@ for data_array,dataName in zip(fillName,dName):
             y = i / rows
             x = j * fs
             y = i * fs
-
             # 生成0到1的随机数，如果小于概率密度函数的值，就在该位置绘制点
-            if np.random.rand() < normalized_data[i * fs, j * fs]:
+            if not allFlage:
+                if np.random.rand() < normalized_data[i * fs, j * fs]:
+                    size = normalized_data[i * fs, j * fs] * zoom  # 随机生成点的大小
+                    size = ((1 / (1 + np.exp((-normalized_data[i * fs, j * fs] + 0.5) * 50)))) * zoom
+                    print("ij:", normalized_data[i * fs, j * fs])
+                    print("size:", size)
+                    plt.scatter(x, y, s=size, color='white', alpha=1)
+                    # circle = plt.Circle((x, y), size, color='r', fill=True)  # 圆心坐标为(0.5, 0.5)，半径为0.2
+                    # plt.gca().add_patch(circle)
+            else:
                 size = normalized_data[i * fs, j * fs] * zoom  # 随机生成点的大小
+                size = ((1 / (1 + np.exp((-normalized_data[i * fs, j * fs] + 0.5) * 50)))) * zoom
+                print("ij:", normalized_data[i * fs, j * fs])
+                print("size:", size)
                 plt.scatter(x, y, s=size, color='white', alpha=1)
-                # circle = plt.Circle((x, y), size, color='r', fill=True)  # 圆心坐标为(0.5, 0.5)，半径为0.2
-                # plt.gca().add_patch(circle)
 
-            # size = normalized_data[i * fs, j * fs] * zoom  # 随机生成点的大小
-            # plt.scatter(x, y, s=size, color='white', alpha=1)
+
+
 
 
     # plt.title('Circle Dots based on Probability Density Function')
@@ -90,7 +103,7 @@ for data_array,dataName in zip(fillName,dName):
 
     current_time = datetime.datetime.now()
     file_name = dataName + "_fs" + str(fs) + "_" + current_time.strftime("%Y%m%d_%H%M%S") + ".jpg"
-    file_name = dataName + "_fs" + str(fs) + "_zoom" + str(zoom) + ".jpg"
+    file_name = dataName +"_all"+str(allFlage)+ "_fs" + str(fs) + "_zoom" + str(zoom) + ".jpg"
     # plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
     # plt.margins(0, 0)
     plt.xticks([])  # 去 x 轴刻度

@@ -81,7 +81,6 @@ def findCenterPoint2coordinate():
             _, binary = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
             for row  in range(image.shape[0]):
                 for col in range(image.shape[1]):
-
                     if binary[row,col]==255:
                         pred[row,col]=pred[row,col]+1.0
 
@@ -186,7 +185,7 @@ def draw3Heart(data,maxX,maxY):
 def textNparray(pred):
     # np.random.seed(0)
     # pred = np.random.random_sample((1024, 1024))
-    plt.imshow(pred, cmap=plt.cm.jet,interpolation='bicubic')#'hot'   plt.cm.jet 'RdBu'
+    plt.imshow(pred, cmap=plt.cm.jet,interpolation='bicubic')#'hot'   plt.cm.jet 'RdBu''viridis'
     current_time = datetime.datetime.now()
     file_name = "Kvasir-SEG"+current_time.strftime("%Y%m%d_%H%M%S") + ".svg"
     file_name = "CVC-ClinicDB" + current_time.strftime("%Y%m%d_%H%M%S") + ".svg"

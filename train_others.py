@@ -18,6 +18,7 @@ from Models import EUNet
 from Models import PraNet_Res2Net
 from Models import HarDMSEG
 from Models import U2Net
+from Models import FCB
 import progressbar
 import time
 
@@ -216,7 +217,7 @@ def train(args):
 
     match args.model:
         case "FCBFormer":
-            model = models.FCBFormer()
+            model = FCB.FCBFormer()
         case "UNet":
             model = unet.UNet()
         case "UNet++":

@@ -8,3 +8,15 @@ Abstract.pdf
 /tool/
 /CVC-ClinicDB/
 .gitignore
+/Models/BCN.py
+/Models/CFANet.py
+/Models/EUNet.py
+/Models/FAPNet.py
+/Models/FCB.py
+/Models/HarDMSEG.py
+/Models/MSNet.py
+/Models/PraNet_Res2Net.py
+/Models/pvt_v2.py
+/Models/U2Net.py
+/Models/unet_lightning.py
+/Models/unet.py

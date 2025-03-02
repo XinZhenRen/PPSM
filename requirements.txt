@@ -1,0 +1,7 @@
+numpy
+opencv-python
+scikit-image
+scikit-learn
+timm
+python==3.10
+pytorch-cuda==11.7
